@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+
             $table->id();
             //LOCAL
             $table->string('name');
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             //GOOGLE
-            $table->string('idGoogleUser')->nullable();
+            $table->bigInteger('idGoogleUser')->nullable();
             $table->string('IdToken')->nullable();
             $table->string('familyName')->nullable();
             $table->string('givenName')->nullable();
@@ -32,6 +33,13 @@ return new class extends Migration
             //INFO SYSTEM
             $table->rememberToken();
             $table->timestamps();
+
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+
+            // Agregar columna para la relación
+            $table->unsignedBigInteger('profile_id')->nullable();
+            $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

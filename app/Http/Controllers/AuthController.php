@@ -28,6 +28,7 @@ class AuthController extends Controller
             ]
             );
 
+
             if($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
