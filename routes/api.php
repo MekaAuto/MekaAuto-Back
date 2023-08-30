@@ -14,8 +14,8 @@ Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/users', [UserController::class, 'getAuthenticatedUser'])->name('users.getAuthenticatedUser'); //good
-    Route::post('/logout', [AuthController::class, 'logoutUser']);
+    Route::post('/auth/users', [UserController::class, 'getAuthenticatedUser'])->name('users.getAuthenticatedUser'); //good
+    Route::post('/auth/logout', [AuthController::class, 'logoutUser']);
 
     //Articles
     Route::get('/note', [NoteController::class, 'index'])->name('posts.index');

@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -19,12 +20,9 @@ return new class extends Migration {
             $table->enum('status', ['completeData', 'incompleteData', 'notverified' ])->default('notverified');
             $table->enum('role', ['nothing','buyer', 'seller', 'both', 'carrier', 'admin'])->default('nothing');
             $table->enum('score', ['0', '1', '2', '3', '4', '5'])->default('0');
-
-            //RELACION
             $table->timestamps();
-            $table->unsignedBigInteger('users_id')->nullable();
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->engine = 'InnoDB';
+
         });
     }
 
