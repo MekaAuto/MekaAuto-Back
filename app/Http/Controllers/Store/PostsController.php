@@ -58,8 +58,7 @@ class PostsController extends Controller
         ];
 
         //echo  response()->json($data, 200);
-
-        dd($data);
+        //dd($data);
 
         return response()->json($data, 200);
     }

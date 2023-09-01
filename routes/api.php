@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\Store\PostsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -11,6 +12,8 @@ Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 //GOOGLE
 Route::post('/auth/googleUser', [AuthController::class, 'googleUser']);
+//Articles
+Route::get('/post', [PostsController::class, 'index'])->name('posts.index');
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
