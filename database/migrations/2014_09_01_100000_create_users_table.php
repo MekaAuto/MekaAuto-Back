@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('profile_pic')->default('person_1.jpg');
             $table->timestamp('email_verified_at')->nullable();
             //LOCAL Y GOOGLE
-            $table->string('AccessToken')->nullable();
+            //$table->string('AccessToken')->nullable();
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
             //GOOGLE
-            $table->bigInteger('idGoogleUser')->nullable();
-            $table->string('IdToken')->nullable();
+            //$table->bigInteger('idGoogleUser')->nullable();
+            $table->string('idToken')->nullable();
             $table->string('familyName')->nullable();
             $table->string('givenName')->nullable();
             $table->string('imageUrl')->nullable();

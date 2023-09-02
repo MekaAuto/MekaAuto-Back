@@ -19,6 +19,21 @@ class AuthController extends Controller
     {
         try {
             //Validated
+
+
+
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return response()->json([
+                        'status' => false,
+                        'message' => 'El email ya esta registrado'
+                    ], 401);
+            }
+
+            /*
+
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -27,7 +42,7 @@ class AuthController extends Controller
                 'password' => 'required'
             ]
             );
-
+            */
 
             if($validateUser->fails()) {
                 return response()->json([
@@ -48,9 +63,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Created Successfully',
-                'token' => $AccessToken,
-                'data' => $user,
+                'message' => 'Usuario creado con éxito',
             ], 200);
 
         } catch (\Throwable $th) {
@@ -123,26 +136,41 @@ class AuthController extends Controller
 
             if ($existingUser) {
                 // Si el usuario ya existe, iniciar sesión
-                $loginUser = $this->loginUser($request);
+                $loginUser = User::where('email', $email)
+                    ->where('idToken', $request->idToken)
+                    ->first();
 
-                return response()->json([
-                    'status' => true,
-                    'message' => 'User Logged In Successfully',
-                    'token' => $loginUser['token']
-                ], 200);
+                if ($loginUser) {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'El usuario inició sesión correctamente',
+                        'remember_token' => $loginUser->remember_token
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Las credenciales de inicio de sesión no son válidas.'
+                    ], 401);
+                }
             } else {
                 // Si el usuario no existe, crearlo
-                $request->merge([
-                    'name' => $jsonData['name'],
-                    'password' => $jsonData['password']
-                ]);
+                $remember_token = Str::random(80);
+                $fullname = $request->familyName . ' ' . $request->givenName;
 
-                $user = $this->createUser($request);
+                $user = User::create([
+                    'name' => $fullname,
+                    'familyName' => $request->familyName,
+                    'givenName' => $request->givenName,
+                    'email' => $email,
+                    'imageUrl' => $request->picture,
+                    'idToken' => $request->idToken,
+                    'remember_token' => $remember_token,
+                ]);
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'User Created Successfully',
-                    'token' => $user['token']
+                    'message' => 'Usuario creado con éxito',
+                    'remember_token' => $remember_token,
                 ], 200);
             }
         } catch (\Throwable $th) {
